@@ -1,0 +1,869 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}[hidden]{display:none!important}</style></head><body>
+<title>Missão Português Year 5</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;700;800;900&display=swap">
+<style>
+/* Layout: uma coluna de celular (max 560px). Mapa de lições em trilha; lição = barra de progresso no topo, cartão no meio, botão grande embaixo. Cores = as três cores do roteiro da escola (azul plurais, verde artigos, amarelo gênero). Tema claro fixo de propósito (jogo infantil). */
+:root{
+  --bg:#EEF3FB; --card:#FFFFFF; --ink:#1D2340; --muted:#5D6487; --line:#D6DDEC;
+  --blue:#2D5BD0; --blue-d:#1F44A6; --blue-l:#E3EBFD;
+  --green:#14755B; --green-d:#0C5643; --green-l:#DDF2EA;
+  --amber:#E7A21B; --amber-d:#B97C06; --amber-l:#FFF2D3;
+  --ok:#2FA968; --ok-d:#1F8450; --ok-l:#DDF6E7;
+  --oops:#E8723C; --oops-d:#BD5323; --oops-l:#FFE8DC;
+  --gold:#F5B800; --rust:#C4572A; --tico:#B9773F; --tico-d:#7E4B22; --cream:#F7E8C9;
+  --f-display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"Nunito","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+#app{max-width:560px;margin:0 auto;min-height:100%;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 120px}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+.btn{display:block;width:100%;padding:14px 18px;border-radius:16px;font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:.02em;text-transform:uppercase;background:var(--blue);color:#fff;box-shadow:0 5px 0 var(--blue-d);transition:transform .08s, box-shadow .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--blue-d)}
+.btn[disabled]{background:var(--line);color:#9AA2BE;box-shadow:0 5px 0 #C3CBDD;cursor:default}
+.btn.ok{background:var(--ok);box-shadow:0 5px 0 var(--ok-d)}
+.btn.oops{background:var(--oops);box-shadow:0 5px 0 var(--oops-d)}
+.btn.ghost{background:var(--card);color:var(--blue);box-shadow:0 4px 0 var(--line);border:2px solid var(--line)}
+.btn.small{font-size:16px;padding:10px 14px}
+
+/* ---------- mascote ---------- */
+.tico{display:block}
+.bounce{animation:bounce 1.2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.pop{animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(.6)}100%{transform:scale(1)}}
+
+/* ---------- início ---------- */
+.start{display:grid;gap:18px;padding-top:24px;text-align:center;justify-items:center}
+.start h1{font-size:40px;color:var(--blue-d)}
+.start h1 span{display:block;font-size:22px;color:var(--muted);font-weight:700}
+.bubble{position:relative;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:14px 16px;font-weight:700;max-width:420px}
+.bubble::after{content:"";position:absolute;left:50%;top:-11px;width:18px;height:18px;background:var(--card);border-left:2px solid var(--line);border-top:2px solid var(--line);transform:translateX(-50%) rotate(45deg)}
+.name-in{width:100%;max-width:340px;font:800 24px var(--f-display);text-align:center;padding:12px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink)}
+.start .btn{max-width:340px}
+.chips3{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{font-weight:800;font-size:14px;padding:5px 12px;border-radius:999px;color:#fff}
+
+/* ---------- mapa ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:6px 14px}
+.hello{font:800 26px var(--f-display)}
+.pills{display:flex;gap:8px}
+.pill{display:flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:4px 12px;font-weight:900;font-variant-numeric:tabular-nums}
+.pill svg{width:20px;height:20px}
+.cta-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+.cta-row .btn{font-size:15px;padding:12px 8px}
+.mod{margin-bottom:26px}
+.mod-head{border-radius:20px;padding:14px 16px;color:#fff;display:flex;align-items:center;gap:12px}
+.mod-head .num{font:800 34px var(--f-display);opacity:.9;line-height:1}
+.mod-head h2{font-size:26px}
+.mod-head p{margin:0;font-weight:700;opacity:.92;font-size:15px}
+.trail{display:grid;gap:14px;padding:18px 0 0}
+.node{display:flex;align-items:center;gap:14px;width:fit-content;max-width:100%}
+.node:nth-child(4n+2){margin-left:18%}
+.node:nth-child(4n+3){margin-left:34%}
+.node:nth-child(4n+4){margin-left:18%}
+.dot{flex:none;width:70px;height:70px;border-radius:50%;display:grid;place-items:center;font:800 28px var(--f-display);color:#fff;box-shadow:0 6px 0 rgba(0,0,0,.18);position:relative}
+.dot.done{box-shadow:0 6px 0 rgba(0,0,0,.18),0 0 0 5px var(--gold) inset}
+.node-label{min-width:0}
+.node-label b{display:block;font-size:16px;line-height:1.2}
+.stars{display:flex;gap:2px;margin-top:3px}
+.stars svg{width:18px;height:18px}
+.final .dot{width:84px;height:84px;background:var(--gold);box-shadow:0 6px 0 #C08F00}
+.settings{margin-top:30px;background:var(--card);border-radius:18px;border:2px solid var(--line);padding:14px 16px;display:grid;gap:10px}
+.settings h3{font-size:20px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700}
+.toggle{width:56px;height:32px;border-radius:999px;background:var(--line);position:relative;flex:none}
+.toggle::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .15s}
+.toggle[aria-pressed="true"]{background:var(--ok)}
+.toggle[aria-pressed="true"]::after{left:28px}
+.linkbtn{color:var(--blue);font-weight:800;text-decoration:underline;padding:4px 0}
+.linkbtn.danger{color:var(--oops-d)}
+
+/* ---------- lição ---------- */
+.lesson{display:flex;flex-direction:column;gap:16px}
+.lbar{display:flex;align-items:center;gap:12px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:8px;z-index:5}
+.x{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;color:var(--muted)}
+.x svg{width:24px;height:24px}
+.prog{flex:1;height:18px;background:var(--line);border-radius:999px;overflow:hidden}
+.prog i{display:block;height:100%;border-radius:999px;background:var(--ok);transition:width .4s ease;box-shadow:inset 0 -5px 0 rgba(0,0,0,.12)}
+.combo{font-weight:900;color:var(--oops-d);font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+.card{background:var(--card);border-radius:22px;border:2px solid var(--line);padding:18px}
+.kicker{font-weight:900;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#fff;display:inline-block;padding:4px 10px;border-radius:999px;margin-bottom:10px}
+.ex-title{font-size:28px;margin-bottom:12px}
+.formula{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;font:800 22px var(--f-display);background:var(--bg);border-radius:16px;padding:12px;margin:6px 0 14px}
+.formula .fx{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:2px 10px;white-space:nowrap}
+.formula .s{color:var(--blue);border-color:var(--blue)}
+.formula .op{color:var(--muted)}
+.ex-body p{margin:0 0 10px}
+.ex-list{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.ex-list li{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 8px;background:var(--bg);border-radius:12px;padding:8px 12px;font-weight:800;font-size:19px}
+.ex-list .arrow{color:var(--muted)}
+.ex-list small{flex-basis:100%;font-weight:600;font-size:14px;color:var(--muted)}
+mark{background:none;color:var(--blue);font-weight:900;text-decoration:underline 3px;text-underline-offset:3px}
+.m-artigos mark{color:var(--green)}
+.m-genero mark{color:var(--amber-d)}
+.tip{display:flex;gap:10px;align-items:flex-start;margin-top:14px}
+.tip .bubble{flex:1;text-align:left;font-size:16px}
+.tip .bubble::after{left:-11px;top:24px;transform:rotate(-45deg)}
+.tip .bubble b{color:var(--rust)}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.twocol>div{background:var(--bg);border-radius:14px;padding:10px 12px;min-width:0}
+.twocol h4{margin:0 0 4px;font:800 15px var(--f-display);text-transform:uppercase;letter-spacing:.05em}
+.twocol .big{font:800 21px var(--f-display);line-height:1.2}
+.twocol small{display:block;color:var(--muted);font-weight:600;font-size:14px;margin-top:4px}
+.mtx{border-collapse:separate;border-spacing:4px;margin:4px auto;font-variant-numeric:tabular-nums}
+.mtx th{font-size:13px;color:var(--muted);font-weight:800;padding:2px 6px;text-transform:uppercase;letter-spacing:.04em}
+.mtx td{background:var(--green-l);border-radius:10px;font:800 26px var(--f-display);color:var(--green-d);text-align:center;min-width:76px;padding:4px 8px}
+.mtx td.q{background:var(--amber-l);color:var(--amber-d);outline:3px dashed var(--amber)}
+.mtx caption{font:800 16px var(--f-display);color:var(--green-d);padding-bottom:2px}
+.mtx-wrap{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;overflow-x:auto}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.qlabel{font-weight:900;color:var(--muted);font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.spk{width:44px;height:44px;border-radius:12px;background:var(--blue-l);color:var(--blue);display:grid;place-items:center;flex:none}
+.spk svg{width:24px;height:24px}
+.prompt{font-size:25px;font-weight:700;margin-bottom:16px}
+.prompt b{color:var(--blue-d)}
+.opts{display:grid;gap:10px}
+.opt{width:100%;text-align:left;padding:14px 16px;border-radius:16px;border:2px solid var(--line);background:var(--card);font-weight:800;font-size:19px;box-shadow:0 4px 0 var(--line);transition:transform .06s}
+.opt:active{transform:translateY(2px)}
+.opt.sel{border-color:var(--blue);background:var(--blue-l);box-shadow:0 4px 0 var(--blue)}
+.opt.right{border-color:var(--ok);background:var(--ok-l);box-shadow:0 4px 0 var(--ok)}
+.opt.wrong{border-color:var(--oops);background:var(--oops-l);box-shadow:0 4px 0 var(--oops)}
+.opts.two{grid-template-columns:1fr 1fr}
+.opts.two .opt{text-align:center}
+.toks{display:flex;flex-wrap:wrap;gap:8px;font-size:22px;line-height:1.2}
+.tok{padding:8px 12px;border-radius:12px;border:2px solid var(--line);background:var(--card);font-weight:800;box-shadow:0 3px 0 var(--line)}
+.tok.sel{border-color:var(--green);background:var(--green-l);box-shadow:0 3px 0 var(--green)}
+.tok.right{border-color:var(--ok);background:var(--ok-l)}
+.tok.miss{border-color:var(--oops);border-style:dashed}
+.tok.wrong{border-color:var(--oops);background:var(--oops-l)}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:10px;min-width:0}
+.mt{padding:14px 10px;border-radius:14px;border:2px solid var(--line);background:var(--card);font-weight:800;font-size:19px;box-shadow:0 4px 0 var(--line);text-align:center}
+.mt.sel{border-color:var(--amber);background:var(--amber-l);box-shadow:0 4px 0 var(--amber)}
+.mt.done{border-color:var(--ok);background:var(--ok-l);color:var(--ok-d);box-shadow:none;opacity:.75}
+.shake{animation:shake .35s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bg);border-top:2px solid var(--line);padding:14px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.bottom .inner{max-width:560px;margin:0 auto;display:grid;gap:12px}
+.bottom.good{background:var(--ok-l);border-color:var(--ok)}
+.bottom.bad{background:var(--oops-l);border-color:var(--oops)}
+.fb{display:flex;gap:12px;align-items:center}
+.fb h3{font-size:26px}
+.good .fb h3{color:var(--ok-d)}
+.bad .fb h3{color:var(--oops-d)}
+.fb p{margin:2px 0 0;font-weight:700}
+.fb .why{font-weight:600;font-size:15px;color:var(--ink)}
+.slide{animation:slide .25s ease-out}
+@keyframes slide{from{transform:translateY(40px);opacity:.3}to{transform:none;opacity:1}}
+.xpfly{font:800 20px var(--f-display);color:var(--amber-d)}
+
+/* ---------- fim de lição ---------- */
+.end{display:grid;gap:16px;justify-items:center;text-align:center;padding-top:20px}
+.end h1{font-size:36px;color:var(--ok-d)}
+.bigstars{display:flex;gap:8px}
+.bigstars svg{width:58px;height:58px}
+.bigstars svg.on{animation:pop .5s cubic-bezier(.2,1.6,.4,1) both}
+.bigstars svg:nth-child(2){animation-delay:.15s}
+.bigstars svg:nth-child(3){animation-delay:.3s}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.stat{border-radius:16px;border:2px solid var(--line);background:var(--card);padding:10px 6px}
+.stat b{display:block;font:800 26px var(--f-display);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.end .btn{max-width:420px}
+
+/* ---------- resumão ---------- */
+.res{display:grid;gap:14px}
+.res .card h3{font-size:22px;margin-bottom:8px}
+.res ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.res li b{font-weight:900}
+
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+@media (prefers-reduced-motion:reduce){.bounce,.pop,.slide,.shake,.bigstars svg.on{animation:none}}
+@media (max-width:380px){.prompt{font-size:22px}.ex-title{font-size:24px}.node:nth-child(4n+3){margin-left:24%}}
+</style>
+
+<div id="app"></div>
+<canvas id="confetti"></canvas>
+
+<script id="conteudo">
+/* ===================== CONTEÚDO (conferido com o roteiro da escola) ===================== */
+const PR = ['Sem hífen: só no fim', 'Com hífen: os dois mudam', 'Com hífen: só o 1º muda', 'Com hífen: só o 2º muda'];
+const GT = ['Biforme', 'Comum de dois', 'Sobrecomum', 'Epiceno'];
+const ART = { def: { ms: 'o', fs: 'a', mp: 'os', fp: 'as' }, indef: { ms: 'um', fs: 'uma', mp: 'uns', fp: 'umas' } };
+// mc: a resposta certa é SEMPRE a primeira da lista (o jogo embaralha na tela)
+const mc = (q, o, why, x = {}) => ({ t: 'mc', q, o, a: 0, why, ...x });
+const tf = (q, v, why) => ({ t: 'mc', q: 'Verdadeiro ou falso? ' + q, o: ['Verdadeiro', 'Falso'], a: v ? 0 : 1, keep: true, two: true, why });
+const regra = (q, a, why) => ({ t: 'mc', q, o: PR, a, keep: true, why });
+const tipo = (q, a, why) => ({ t: 'mc', q, o: GT, a, keep: true, why });
+const tap = (s, a, why) => ({ t: 'tap', q: 'Toque em TODOS os artigos da frase.', s: s.split(' '), a, why });
+const match = (q, pairs, why) => ({ t: 'match', q, pairs, why });
+const tabela = (kind, cell, o, why) => ({ t: 'table', kind, cell, q: 'Qual artigo está faltando na tabela?', o, a: 0, why });
+const ex = (o) => ({ t: 'explain', ...o });
+
+const MODULES = [
+{
+  id: 'plurais', n: 1, name: 'Plurais', desc: 'Palavras compostas', color: 'var(--blue)', light: 'var(--blue-l)',
+  lessons: [
+  { id: 'p1', title: 'Sem hífen: plural só no fim', steps: [
+    ex({ title: 'Palavra grudada: plural só no fim',
+      formula: '<span class="fx">[ PALAVRA ]</span><span class="op">+</span><span class="fx s">[ S ]</span><span class="op">=</span><span class="fx">PLURAL</span>',
+      body: '<p>Quando duas palavras se juntaram e viraram <b>uma palavra só, sem hífen</b>, o plural é feito como numa palavra comum: mexemos <b>só no final</b>.</p>',
+      list: [['girassol', 'girass<mark>óis</mark>', 'igual a sol → sóis'], ['pontapé', 'pontap<mark>és</mark>'], ['mandachuva', 'mandachuv<mark>as</mark>']],
+      memo: 'Grudou? Virou <b>uma palavra só</b>. O plural vai <b>só no fim</b>.',
+      say: 'Palavras sem hífen. Quando duas palavras se juntam e viram uma palavra só, sem hífen, o plural é feito como numa palavra comum: só no final. Girassol, girassóis. Pontapé, pontapés. Mandachuva, mandachuvas. Para lembrar: grudou? Virou uma palavra só. O plural vai só no fim.' }),
+    mc('Qual é o plural de <b>pontapé</b>?', ['pontapés', 'pontaspés', 'ponta-pés', 'pontapéses'], 'Pontapé é uma palavra só, sem hífen. Só ganha o S no fim: pontapés.'),
+    mc('Qual é o plural de <b>girassol</b>?', ['girassóis', 'girassols', 'girassoles', 'girasóis'], 'Girassol termina igual a sol. Sol vira sóis, então girassol vira girassóis.'),
+    mc('Qual é o plural de <b>mandachuva</b>?', ['mandachuvas', 'mandaschuvas', 'mandaschuva', 'manda-chuvas'], 'Mandachuva é uma palavra só, sem hífen: o S vai só no fim.'),
+    mc('Qual destas palavras compostas <b>NÃO</b> tem hífen?', ['girassol', 'couve-flor', 'guarda-chuva', 'beija-flor'], 'Girassol é escrita toda junta. As outras têm hífen (o tracinho).'),
+    mc('Nas palavras compostas <b>sem hífen</b>, onde vai o plural?', ['Só no final da palavra', 'No meio da palavra', 'No começo e no final'], 'Sem hífen é uma palavra só, então o plural vai só no final.'),
+    mc('Qual é o plural de <b>passatempo</b>?', ['passatempos', 'passastempos', 'passatempoes', 'passos-tempos'], 'Passatempo é uma palavra só: passatempos.'),
+    mc('Qual é o plural de <b>rodapé</b>?', ['rodapés', 'rodaspés', 'rodapéis', 'rodas-pés'], 'Rodapé é uma palavra só, igual a pontapé: rodapés.'),
+    tf('Girassol vira girassóis do mesmo jeito que sol vira sóis.', true, 'Isso mesmo! O fim da palavra é "sol", e sol no plural é sóis.'),
+  ]},
+  { id: 'p2', title: 'Com hífen: os DOIS mudam', steps: [
+    ex({ title: 'Com hífen: os DOIS mudam',
+      formula: '<span class="fx">[ PALAVRA 1 <span class="s">+ S</span> ]</span><span class="op">-</span><span class="fx">[ PALAVRA 2 <span class="s">+ S</span> ]</span>',
+      body: '<p>Quando a palavra tem hífen e as duas partes são palavras que <b>dão nome</b> (substantivo), <b>dão característica</b> (adjetivo) ou são <b>número</b> (numeral), <b>as DUAS vão para o plural</b>.</p>',
+      list: [['couve-flor', 'couve<mark>s</mark>-flor<mark>es</mark>', 'substantivo + substantivo'], ['segunda-feira', 'segunda<mark>s</mark>-feira<mark>s</mark>', 'numeral + substantivo'], ['amor-perfeito', 'amor<mark>es</mark>-perfeito<mark>s</mark>', 'substantivo + adjetivo']],
+      memo: 'Nome com nome, nome com característica ou número com nome: <b>os dois ganham plural</b>.',
+      say: 'Com hífen: os dois mudam. Quando as duas partes são substantivo, adjetivo ou numeral, as duas vão para o plural. Couve-flor, couves-flores. Segunda-feira, segundas-feiras. Amor-perfeito, amores-perfeitos. Para lembrar: nome com nome, nome com característica, ou número com nome: os dois ganham plural.' }),
+    mc('Qual é o plural de <b>couve-flor</b>?', ['couves-flores', 'couve-flores', 'couves-flor', 'couve-flors'], 'Couve e flor são dois substantivos: os dois mudam. Couves-flores.'),
+    mc('Qual é o plural de <b>segunda-feira</b>?', ['segundas-feiras', 'segunda-feiras', 'segundas-feira'], 'Segunda é numeral e feira é substantivo: os dois mudam.'),
+    mc('Qual é o plural de <b>cachorro-quente</b>?', ['cachorros-quentes', 'cachorro-quentes', 'cachorros-quente'], 'Cachorro é substantivo e quente é adjetivo: os dois mudam.'),
+    mc('Qual é o plural de <b>amor-perfeito</b>?', ['amores-perfeitos', 'amor-perfeitos', 'amores-perfeito', 'amors-perfeitos'], 'Amor (substantivo) + perfeito (adjetivo): os dois mudam. Amores-perfeitos.'),
+    mc('Qual é o plural de <b>cavalo-marinho</b>?', ['cavalos-marinhos', 'cavalo-marinhos', 'cavalos-marinho'], 'Cavalo (substantivo) + marinho (adjetivo): os dois mudam.'),
+    mc('Qual é o plural de <b>obra-prima</b>?', ['obras-primas', 'obra-primas', 'obras-prima'], 'Obra (substantivo) + prima (adjetivo): os dois mudam.'),
+    mc('Em <b>couve-flor</b>, as duas partes são:', ['substantivo + substantivo', 'verbo + substantivo', 'uma palavra repetida'], 'Couve é um nome e flor também é um nome: substantivo + substantivo.'),
+    mc('Por que <b>segunda-feira</b> vira <b>segundas-feiras</b>?', ['Porque é numeral + substantivo: os dois mudam', 'Porque tem preposição no meio', 'Porque a primeira palavra é verbo'], 'Segunda é um numeral (número) e feira é substantivo. Por isso os dois mudam.'),
+  ]},
+  { id: 'p3', title: 'Com hífen: só o PRIMEIRO muda', steps: [
+    ex({ title: 'Com hífen: só o PRIMEIRO muda',
+      formula: '<span class="fx">[ PALAVRA 1 <span class="s">+ S</span> ]</span><span class="op">-</span><span class="fx">[ PALAVRA 2 ]</span>',
+      body: '<p>Só a <b>primeira</b> palavra vai para o plural em dois casos:</p><p><b>1.</b> Quando tem uma <b>preposição</b> no meio (<b>de, do, da</b>).<br><b>2.</b> Quando a segunda palavra diz a <b>função</b> ou o <b>tipo</b> da primeira.</p>',
+      list: [['dragão-do-mar', 'drag<mark>ões</mark>-do-mar', 'tem "do" no meio'], ['porquinho-da-índia', 'porquinho<mark>s</mark>-da-índia', 'tem "da" no meio'], ['pombo-correio', 'pombo<mark>s</mark>-correio', 'correio é a função do pombo']],
+      memo: 'Viu <b>DE, DO ou DA</b> no meio? Só a primeira muda. O resto fica igual, como um sobrenome.',
+      say: 'Com hífen: só o primeiro muda. Isso acontece quando tem uma preposição no meio, como de, do, da. Ou quando a segunda palavra diz a função da primeira. Dragão-do-mar, dragões-do-mar. Porquinho-da-índia, porquinhos-da-índia. Pombo-correio, pombos-correio, porque o correio é a função do pombo. Para lembrar: viu de, do ou da no meio? Só a primeira muda.' }),
+    mc('Qual é o plural de <b>estrela-do-mar</b>?', ['estrelas-do-mar', 'estrelas-dos-mares', 'estrela-dos-mares', 'estrela-do-mares'], 'Tem "do" no meio (preposição). Só a primeira muda: estrelas-do-mar.'),
+    mc('Qual é o plural de <b>porquinho-da-índia</b>?', ['porquinhos-da-índia', 'porquinhos-das-índias', 'porquinho-das-índias'], 'Tem "da" no meio. Só a primeira muda: porquinhos-da-índia.'),
+    mc('Qual é o plural de <b>cana-de-açúcar</b>?', ['canas-de-açúcar', 'canas-de-açúcares', 'cana-de-açúcares'], 'Tem "de" no meio. Só a primeira muda: canas-de-açúcar.'),
+    mc('Qual é o plural de <b>joão-de-barro</b>?', ['joões-de-barro', 'joão-de-barros', 'joões-de-barros'], 'Tem "de" no meio. Só a primeira muda: joões-de-barro.'),
+    mc('Qual é o plural de <b>pombo-correio</b>?', ['pombos-correio', 'pombos-correios', 'pombo-correios'], 'Correio diz a função do pombo (ele leva cartas). Só a primeira muda.'),
+    mc('Qual é o plural de <b>dragão-do-mar</b>?', ['dragões-do-mar', 'dragãos-do-mar', 'dragões-dos-mares'], 'Tem "do" no meio. Só dragão muda, e dragão no plural é dragões.'),
+    mc('Em <b>estrela-do-mar</b>, qual palavrinha mostra que só a primeira muda?', ['do', 'estrela', 'mar'], '"Do" é a preposição. Quando ela aparece no meio, só a primeira palavra muda.'),
+    mc('Por que <b>pombo-correio</b> vira <b>pombos-correio</b>?', ['Porque correio diz a função do pombo', 'Porque as duas palavras são verbos', 'Porque a palavra se repete'], 'O pombo-correio é o pombo que leva cartas. Correio é a função dele, então só pombo muda.'),
+    mc('Em <b>salários-família</b>, por que só a primeira palavra mudou?', ['Porque família diz o tipo de salário', 'Porque tem preposição no meio', 'Porque a primeira palavra é verbo'], 'A segunda palavra especifica (diz o tipo) da primeira. Por isso só salário muda.'),
+  ]},
+  { id: 'p4', title: 'Com hífen: só o SEGUNDO muda', steps: [
+    ex({ title: 'Com hífen: só o SEGUNDO muda',
+      formula: '<span class="fx">[ PALAVRA 1 ]</span><span class="op">-</span><span class="fx">[ PALAVRA 2 <span class="s">+ S</span> ]</span>',
+      body: '<p>Só a <b>segunda</b> (a última) palavra vai para o plural quando:</p><p><b>1.</b> A primeira palavra é um <b>verbo</b> (uma ação).<br><b>2.</b> As palavras se <b>repetem</b>.</p>',
+      list: [['guarda-chuva', 'guarda-chuv<mark>as</mark>', 'guarda = verbo guardar'], ['beija-flor', 'beija-flor<mark>es</mark>', 'beija = verbo beijar'], ['tico-tico', 'tico-tico<mark>s</mark>', 'palavra repetida']],
+      memo: '<b>Verbo não vai para o plural.</b> Quem muda é a palavra do fim. Eu sou um tico-tico, e meus amigos são tico-ticos!',
+      say: 'Com hífen: só o segundo muda. Isso acontece quando a primeira palavra é um verbo, uma ação, ou quando as palavras se repetem. Guarda-chuva, guarda-chuvas, porque guarda é o verbo guardar. Beija-flor, beija-flores. Tico-tico, tico-ticos. Para lembrar: verbo não vai para o plural. Quem muda é a palavra do fim.' }),
+    mc('Qual é o plural de <b>guarda-chuva</b>?', ['guarda-chuvas', 'guardas-chuvas', 'guardas-chuva'], 'Guarda é verbo (guardar). Verbo não muda: guarda-chuvas.'),
+    mc('Qual é o plural de <b>beija-flor</b>?', ['beija-flores', 'beijas-flores', 'beijas-flor'], 'Beija é verbo (beijar). Só flor muda: beija-flores.'),
+    mc('Qual é o plural de <b>arranha-céu</b>?', ['arranha-céus', 'arranhas-céus', 'arranhas-céu'], 'Arranha é verbo (arranhar). Só céu muda: arranha-céus.'),
+    mc('Qual é o plural de <b>quebra-cabeça</b>?', ['quebra-cabeças', 'quebras-cabeças', 'quebras-cabeça'], 'Quebra é verbo (quebrar). Só cabeça muda: quebra-cabeças.'),
+    mc('Qual é o plural de <b>tico-tico</b>?', ['tico-ticos', 'ticos-ticos', 'ticos-tico'], 'A palavra se repete. Só a última muda: tico-ticos.'),
+    mc('Qual é o plural de <b>guarda-roupa</b>?', ['guarda-roupas', 'guardas-roupas', 'guardas-roupa'], 'Guarda é verbo. Só roupa muda: guarda-roupas.'),
+    mc('Em <b>guarda-chuva</b>, a palavra <b>guarda</b> é:', ['um verbo (a ação de guardar)', 'uma preposição', 'uma palavra repetida'], 'O guarda-chuva guarda a gente da chuva. Guarda é a ação: um verbo.'),
+    mc('Qual destas palavras tem um <b>VERBO</b> na primeira parte?', ['beija-flor', 'couve-flor', 'estrela-do-mar', 'cachorro-quente'], 'Beija vem do verbo beijar. As outras começam com nomes.'),
+    mc('Qual é o plural de <b>bem-te-vi</b>?', ['bem-te-vis', 'bens-te-vis', 'bem-tes-vis'], 'No bem-te-vi também só a última parte muda: bem-te-vis.'),
+  ]},
+  { id: 'p5', title: 'Revisão: qual é a regra?', shuffle: true, steps: [
+    ex({ title: 'As 4 regras do plural',
+      body: '<ul class="ex-list"><li>Sem hífen <span class="arrow">→</span> só no fim<small>girassol → girassóis</small></li><li>Com hífen, nome + nome <span class="arrow">→</span> os dois mudam<small>couve-flor → couves-flores</small></li><li>Com hífen e DE/DO/DA ou função <span class="arrow">→</span> só o 1º muda<small>pombo-correio → pombos-correio</small></li><li>Com hífen e verbo ou repetição <span class="arrow">→</span> só o 2º muda<small>guarda-chuva → guarda-chuvas</small></li></ul>',
+      memo: 'Agora eu mostro a palavra e você me diz <b>qual regra</b> foi usada. Vamos lá!',
+      say: 'Revisão das quatro regras do plural. Sem hífen: só no fim. Com hífen e nome com nome: os dois mudam. Com hífen e de, do, da, ou função: só o primeiro muda. Com hífen e verbo ou repetição: só o segundo muda. Agora eu mostro a palavra e você me diz qual regra foi usada.' }),
+    regra('Qual regra foi usada em <b>passatempo → passatempos</b>?', 0, 'Passatempo não tem hífen: o plural vai só no fim.'),
+    regra('Qual regra foi usada em <b>couve-flor → couves-flores</b>?', 1, 'Couve e flor são substantivos: os dois mudam.'),
+    regra('Qual regra foi usada em <b>porquinho-da-índia → porquinhos-da-índia</b>?', 2, 'Tem "da" no meio (preposição): só o primeiro muda.'),
+    regra('Qual regra foi usada em <b>guarda-chuva → guarda-chuvas</b>?', 3, 'Guarda é verbo: só o segundo muda.'),
+    regra('Qual regra foi usada em <b>segunda-feira → segundas-feiras</b>?', 1, 'Numeral + substantivo: os dois mudam.'),
+    regra('Qual regra foi usada em <b>beija-flor → beija-flores</b>?', 3, 'Beija é verbo: só o segundo muda.'),
+    regra('Qual regra foi usada em <b>pombo-correio → pombos-correio</b>?', 2, 'Correio é a função do pombo: só o primeiro muda.'),
+    regra('Qual regra foi usada em <b>tico-tico → tico-ticos</b>?', 3, 'Palavra repetida: só o segundo muda.'),
+    regra('Qual regra foi usada em <b>girassol → girassóis</b>?', 0, 'Girassol não tem hífen: o plural vai só no fim.'),
+    regra('Qual regra foi usada em <b>cachorro-quente → cachorros-quentes</b>?', 1, 'Substantivo + adjetivo: os dois mudam.'),
+    mc('Qual sequência está <b>toda certa</b>?', ['vice-campeões, beija-flores, pés de pato', 'vices-campeões, beija-flor, pés de patos', 'vice-campeão, beijas-flores, pé de patos', 'vices-campeões, beijas-flores, pés de patos'], 'Vice nunca muda. Beija é verbo, então só flor muda. Em pés de pato tem "de", então só pé muda.'),
+    mc('Qual destes plurais está <b>ERRADO</b>?', ['beijas-flores', 'couves-flores', 'estrelas-do-mar', 'guarda-chuvas'], 'Beija é verbo e verbo não vai para o plural. O certo é beija-flores.'),
+  ]},
+  ]
+},
+{
+  id: 'artigos', n: 2, name: 'Artigos', desc: 'Definidos e indefinidos', color: 'var(--green)', light: 'var(--green-l)',
+  lessons: [
+  { id: 'a1', title: 'O ou UM? Definido e indefinido', steps: [
+    ex({ title: 'Qual é a diferença?',
+      body: '<div class="twocol"><div><h4 style="color:var(--green)">Definido</h4><div class="big"><mark>O</mark> rio corta a floresta.</div><small>Um rio específico, que nós já conhecemos.</small></div><div><h4 style="color:var(--muted)">Indefinido</h4><div class="big">Há <mark>um</mark> rio na floresta.</div><small>Um rio qualquer, não específico.</small></div></div>',
+      list: [['Definidos', '<mark>o, a, os, as</mark>'], ['Indefinidos', '<mark>um, uma, uns, umas</mark>']],
+      memo: '<b>O</b> é "aquele ali, que eu conheço". <b>UM</b> é "um qualquer".',
+      say: 'Artigos. O artigo definido fala de algo específico, que a gente já conhece: o rio corta a floresta. O artigo indefinido fala de algo qualquer: há um rio na floresta. Os definidos são: o, a, os, as. Os indefinidos são: um, uma, uns, umas. Para lembrar: o é aquele ali, que eu conheço. Um é um qualquer.' }),
+    mc('Qual frase fala de um gato <b>específico</b>, que já conhecemos?', ['O gato dormiu no sofá.', 'Um gato dormiu no sofá.'], 'O artigo "o" é definido: fala de um gato específico.', { two: false }),
+    mc('Na frase "Ganhei <b>uma</b> bicicleta", a palavra <b>uma</b> é:', ['artigo indefinido', 'artigo definido', 'um verbo'], '"Uma" é artigo indefinido: uma bicicleta qualquer.'),
+    mc('Quais são os artigos <b>definidos</b>?', ['o, a, os, as', 'um, uma, uns, umas', 'o, um, a, uma'], 'Definidos: o, a, os, as.'),
+    mc('Quais são os artigos <b>indefinidos</b>?', ['um, uma, uns, umas', 'o, a, os, as', 'os, as, uns, umas'], 'Indefinidos: um, uma, uns, umas.'),
+    mc('O artigo <b>definido</b> fala de algo:', ['específico, que já conhecemos', 'qualquer um, sem escolher'], 'Definido = específico, aquele que a gente já conhece.'),
+    mc('Complete: "Mãe, me empresta ___ caderno azul que eu te mostrei ontem?"', ['o', 'um'], 'É um caderno específico, que a mãe já conhece. Então é "o" (definido).', { two: true }),
+    mc('Complete: "Estou com fome. Quero comer ___ fruta, qualquer uma!"', ['uma', 'a'], 'Qualquer fruta serve. Então é "uma" (indefinido).', { two: true }),
+    tf('"Um" é um artigo definido.', false, '"Um" é indefinido. Os definidos são o, a, os, as.'),
+  ]},
+  { id: 'a2', title: 'A tabela dos artigos', steps: [
+    ex({ title: 'A tabela dos artigos',
+      body: '__MATRIZ__',
+      memo: 'Para classificar um artigo, responda <b>3 perguntas</b>:<br>1. Definido ou indefinido?<br>2. Masculino ou feminino?<br>3. Singular ou plural?',
+      say: 'A tabela dos artigos. Definidos: o é masculino singular, a é feminino singular, os é masculino plural, as é feminino plural. Indefinidos: um é masculino singular, uma é feminino singular, uns é masculino plural, umas é feminino plural. Para classificar um artigo, responda três perguntas: definido ou indefinido? Masculino ou feminino? Singular ou plural?' }),
+    tabela('def', 'fp', ['as', 'os', 'umas', 'a'], 'Definido, feminino, plural: as.'),
+    tabela('indef', 'mp', ['uns', 'umas', 'os', 'um'], 'Indefinido, masculino, plural: uns.'),
+    tabela('indef', 'fs', ['uma', 'um', 'a', 'umas'], 'Indefinido, feminino, singular: uma.'),
+    tabela('def', 'mp', ['os', 'as', 'uns', 'o'], 'Definido, masculino, plural: os.'),
+    mc('Artigo <b>definido, feminino, plural</b>:', ['as', 'os', 'umas', 'a'], 'Definido + feminino + plural = as.'),
+    mc('Artigo <b>indefinido, masculino, plural</b>:', ['uns', 'os', 'um', 'umas'], 'Indefinido + masculino + plural = uns.'),
+    mc('Classifique o artigo <b>umas</b>:', ['indefinido, feminino, plural', 'definido, feminino, plural', 'indefinido, masculino, plural', 'indefinido, feminino, singular'], 'Umas: indefinido (qualquer), feminino, plural.'),
+    mc('Classifique o artigo <b>o</b>:', ['definido, masculino, singular', 'indefinido, masculino, singular', 'definido, feminino, singular', 'definido, masculino, plural'], 'O: definido, masculino, singular.'),
+    mc('Classifique o artigo <b>um</b>:', ['indefinido, masculino, singular', 'definido, masculino, singular', 'indefinido, masculino, plural'], 'Um: indefinido, masculino, singular.'),
+    mc('Complete com artigo <b>definido</b>: "___ meninas chegaram cedo."', ['As', 'Os', 'A'], 'Meninas é feminino e plural. Definido feminino plural: as.'),
+    mc('Complete com artigo <b>indefinido</b>: "Comprei ___ livros novos."', ['uns', 'umas', 'os'], 'Livros é masculino e plural. Indefinido masculino plural: uns.'),
+  ]},
+  { id: 'a3', title: 'Caça aos artigos', steps: [
+    ex({ title: 'Caça aos artigos!',
+      body: '<p>O artigo vem sempre <b>antes de um substantivo</b> (um nome) e combina com ele.</p><p>Agora você vai <b>tocar nos artigos</b> da frase e depois <b>classificar</b> com as 3 perguntas.</p>',
+      list: [['<mark>Os</mark> livros', 'definido, masculino, plural'], ['<mark>uma</mark> reunião', 'indefinido, feminino, singular']],
+      memo: 'Na prova, classifique <b>completo</b>: definido ou indefinido, masculino ou feminino, singular ou plural. As três coisas!',
+      say: 'Caça aos artigos! O artigo vem sempre antes de um nome e combina com ele. Você vai tocar nos artigos da frase e depois classificar. Na prova, classifique completo: definido ou indefinido, masculino ou feminino, singular ou plural. As três coisas!' }),
+    tap('O mendigo pediu um pão.', [0, 3], '"O" vem antes de mendigo e "um" vem antes de pão.'),
+    mc('Em "O mendigo pediu <b>um</b> pão", classifique <b>um</b>:', ['indefinido, masculino, singular', 'definido, masculino, singular', 'indefinido, feminino, singular'], 'Um pão qualquer: indefinido, masculino, singular.'),
+    tap('O dia está agradável hoje.', [0], 'Só "O" é artigo (antes de dia).'),
+    tap('A manhã começou com uma reunião.', [0, 4], '"A" vem antes de manhã e "uma" vem antes de reunião.'),
+    mc('Em "A manhã começou com <b>uma</b> reunião", classifique <b>uma</b>:', ['indefinido, feminino, singular', 'definido, feminino, singular', 'indefinido, feminino, plural'], 'Uma: indefinido, feminino, singular.'),
+    tap('Os livros estão sobre as bancadas.', [0, 4], '"Os" vem antes de livros e "as" vem antes de bancadas.'),
+    mc('Em "Os livros estão sobre <b>as</b> bancadas", classifique <b>as</b>:', ['definido, feminino, plural', 'indefinido, feminino, plural', 'definido, masculino, plural'], 'As: definido, feminino, plural.'),
+    tap('Umas meninas encontraram uns gatinhos.', [0, 3], '"Umas" vem antes de meninas e "uns" vem antes de gatinhos.'),
+    mc('Em "<b>Os</b> livros estão sobre as bancadas", classifique <b>Os</b>:', ['definido, masculino, plural', 'definido, masculino, singular', 'indefinido, masculino, plural'], 'Os: definido, masculino, plural.'),
+    tap('A professora leu uma história para os alunos.', [0, 3, 6], 'Três artigos: "A" (professora), "uma" (história) e "os" (alunos).'),
+    mc('Quantos artigos tem a frase: "O menino deu uma flor para a mãe"?', ['3', '2', '1', '4'], 'São três: O (menino), uma (flor) e a (mãe).', { keep: true, a: 0 }),
+  ]},
+  ]
+},
+{
+  id: 'genero', n: 3, name: 'Gênero', desc: 'Biformes e uniformes', color: 'var(--amber)', light: 'var(--amber-l)',
+  lessons: [
+  { id: 'g1', title: 'Masculino e feminino', steps: [
+    ex({ title: 'Flexão de gênero: o básico',
+      body: '<div class="twocol"><div><h4 style="color:var(--blue)">Masculino</h4><div class="big">aceita o artigo <mark>O</mark></div><small>o ovo, o menino, o sol</small></div><div><h4 style="color:var(--rust)">Feminino</h4><div class="big">aceita o artigo <mark>A</mark></div><small>a janela, a lua, a menina</small></div></div><p style="margin-top:12px"><b>Todos os substantivos têm gênero</b>, até os objetos!</p><p>Cuidado: não é a última letra que manda. <b>O mapa</b> e <b>o dia</b> terminam em A e são masculinos.</p>',
+      memo: 'Truque: coloque <b>O</b> ou <b>A</b> na frente e escute qual soa certo.',
+      say: 'Flexão de gênero. Masculino aceita o artigo o: o ovo, o menino, o sol. Feminino aceita o artigo a: a janela, a lua, a menina. Todos os substantivos têm gênero, até os objetos! Cuidado: não é a última letra que manda. O mapa e o dia terminam em a e são masculinos. Truque: coloque o ou a na frente e escute qual soa certo.' }),
+    mc('Qual é o gênero de <b>janela</b>?', ['feminino (a janela)', 'masculino (o janela)'], 'Dizemos "a janela": feminino.'),
+    mc('Qual é o gênero de <b>sol</b>?', ['masculino (o sol)', 'feminino (a sol)'], 'Dizemos "o sol": masculino.'),
+    mc('Qual destas palavras é <b>masculina</b>?', ['ovo', 'lua', 'mesa', 'cadeira'], 'O ovo. As outras usam "a": a lua, a mesa, a cadeira.'),
+    mc('Qual destas palavras é <b>feminina</b>?', ['flor', 'lápis', 'sol', 'ovo'], 'A flor. As outras usam "o": o lápis, o sol, o ovo.'),
+    tf('Objetos, como mesa e lápis, não têm gênero.', false, 'Todos os substantivos têm gênero, até os objetos: a mesa, o lápis.'),
+    mc('Qual é o gênero de <b>mapa</b>?', ['masculino (o mapa)', 'feminino (a mapa)'], 'Termina em A, mas dizemos "o mapa": masculino. Quem manda é o artigo.'),
+    mc('Para descobrir o gênero de uma palavra, o melhor truque é:', ['colocar O ou A na frente', 'olhar só a última letra', 'contar as letras'], 'Coloque o artigo na frente: o mapa, a flor.'),
+  ]},
+  { id: 'g2', title: 'Biformes: duas formas', steps: [
+    ex({ title: 'Biformes: duas formas',
+      body: '<p><b>BI</b> quer dizer <b>dois</b> (como bicicleta, que tem duas rodas). Biforme tem <b>uma forma para o masculino e outra para o feminino</b>.</p>',
+      list: [['Troca -O ou -E por -A', ''], ['gato', 'gat<mark>a</mark>'], ['mestre', 'mestr<mark>a</mark>'], ['Muda -ÃO para -Ã ou -OA', ''], ['irmão', 'irm<mark>ã</mark>'], ['leão', 'le<mark>oa</mark>']],
+      memo: '<b>Bi</b>forme = <b>duas</b> formas. Gato e gata, irmão e irmã.',
+      say: 'Biformes: duas formas. Bi quer dizer dois, como bicicleta, que tem duas rodas. Biforme tem uma forma para o masculino e outra para o feminino. Primeira regra: troca o ou e por a. Gato, gata. Mestre, mestra. Segunda regra: muda ão para ã ou para oa. Irmão, irmã. Leão, leoa.' }),
+    mc('Qual é o feminino de <b>gato</b>?', ['gata', 'gatoa', 'gatisa'], 'Troca o -o por -a: gata.'),
+    mc('Qual é o feminino de <b>mestre</b>?', ['mestra', 'mestressa', 'mestrisa'], 'Troca o -e por -a: mestra.'),
+    mc('Qual é o feminino de <b>irmão</b>?', ['irmã', 'irmoa', 'irmona'], 'Muda -ão para -ã: irmã.'),
+    mc('Qual é o feminino de <b>leão</b>?', ['leoa', 'leã', 'leona'], 'Muda -ão para -oa: leoa.'),
+    mc('Qual regra foi usada em <b>garoto → garota</b>?', ['Troca -o por -a', 'Muda -ão para -oa', 'Terminação especial -isa'], 'Garoto termina em -o, que virou -a.'),
+    ex({ title: 'Terminações especiais',
+      body: '<p>Algumas palavras ganham um final especial no feminino: <b>-esa, -essa</b> ou <b>-isa</b>.</p>',
+      list: [['poeta', 'poet<mark>isa</mark>'], ['conde', 'cond<mark>essa</mark>'], ['príncipe', 'princ<mark>esa</mark>'], ['duque', 'duqu<mark>esa</mark>']],
+      memo: 'Princesa, condessa, poetisa: finais <b>chiques</b>, de gente da realeza e da poesia.',
+      say: 'Terminações especiais. Algumas palavras ganham um final especial no feminino: esa, essa ou isa. Poeta, poetisa. Conde, condessa. Príncipe, princesa. Duque, duquesa.' }),
+    mc('Qual é o feminino de <b>poeta</b>?', ['poetisa', 'poeta', 'poetessa'], 'Terminação especial -isa: poetisa.'),
+    mc('Qual é o feminino de <b>conde</b>?', ['condessa', 'condesa', 'conda'], 'Terminação especial -essa, com dois S: condessa.'),
+    mc('Qual é o feminino de <b>príncipe</b>?', ['princesa', 'príncipa', 'principessa'], 'Terminação especial -esa: princesa.'),
+    mc('Qual é o feminino de <b>duque</b>?', ['duquesa', 'duca', 'duquessa'], 'Terminação especial -esa: duquesa.'),
+    mc('Qual regra foi usada em <b>leão → leoa</b>?', ['Muda -ão para -oa', 'Troca -o por -a', 'Terminação especial -essa'], 'Leão termina em -ão, que virou -oa.'),
+    mc('Qual é o feminino de <b>campeão</b>?', ['campeã', 'campeoa', 'campeona'], 'Muda -ão para -ã: campeã.'),
+  ]},
+  { id: 'g3', title: 'Radicais diferentes', steps: [
+    ex({ title: 'Às vezes, a palavra muda TODA',
+      body: '<p>Esses também são <b>biformes</b> (têm duas formas), mas o feminino é <b>outra palavra</b>. A regra é: <b>radical diferente</b>, a palavra muda completamente.</p>',
+      list: [['rei', '<mark>rainha</mark>'], ['cavalo', '<mark>égua</mark>'], ['boi', '<mark>vaca</mark>'], ['homem', '<mark>mulher</mark>'], ['pai', '<mark>mãe</mark>']],
+      memo: 'Mudou tudo? É <b>radical diferente</b>. Esses a gente decora em <b>pares</b>, igual par de meias.',
+      say: 'Às vezes a palavra muda toda. Esses também são biformes, têm duas formas, mas o feminino é outra palavra. A regra é radical diferente. Rei, rainha. Cavalo, égua. Boi, vaca. Homem, mulher. Pai, mãe. Esses a gente decora em pares.' }),
+    match('Ligue o masculino ao feminino.', [['rei', 'rainha'], ['cavalo', 'égua'], ['boi', 'vaca'], ['homem', 'mulher']], 'Rei e rainha, cavalo e égua, boi e vaca, homem e mulher.'),
+    mc('Qual é o feminino de <b>pai</b>?', ['mãe', 'paia', 'paiza'], 'Pai e mãe: a palavra muda toda.'),
+    mc('Pai → mãe é biforme. Mas qual é a <b>regra</b>?', ['A palavra muda toda (radical diferente)', 'Troca -o por -a', 'Terminação especial -esa'], 'Pai e mãe são biformes (duas formas), e a regra é radical diferente: a palavra muda completamente.'),
+    mc('Qual é o feminino de <b>cavalo</b>?', ['égua', 'cavala', 'cavaloa'], 'Cavalo e égua: palavras totalmente diferentes.'),
+    mc('Qual é o feminino de <b>boi</b>?', ['vaca', 'boia', 'boa'], 'Boi e vaca: palavras totalmente diferentes.'),
+    match('Ligue os pares da família e da fazenda.', [['pai', 'mãe'], ['bode', 'cabra'], ['genro', 'nora'], ['carneiro', 'ovelha']], 'Pai e mãe, bode e cabra, genro e nora, carneiro e ovelha.'),
+    mc('Qual é o masculino de <b>rainha</b>?', ['rei', 'rainho', 'reio'], 'Rainha e rei.'),
+    mc('Qual é o masculino de <b>mulher</b>?', ['homem', 'mulhero', 'mulhor'], 'Mulher e homem.'),
+  ]},
+  { id: 'g4', title: 'Comum de dois e sobrecomum', steps: [
+    ex({ title: 'Uniformes: uma forma só',
+      body: '<p><b>Uni</b> quer dizer <b>um</b> (como uniforme da escola, que é igual para todos). A palavra é a mesma para menino e menina.</p><p><b>Comum de dois:</b> a palavra <b>NÃO</b> muda, mas o <b>artigo MUDA</b>.</p>',
+      list: [['o artista', '<mark>a</mark> artista'], ['o estudante', '<mark>a</mark> estudante'], ['o dentista', '<mark>a</mark> dentista']],
+      memo: '<b>Comum de dois</b>: a palavra serve para os dois. <b>Só o artigo troca.</b>',
+      say: 'Uniformes: uma forma só. Uni quer dizer um, como o uniforme da escola, que é igual para todos. Comum de dois: a palavra não muda, mas o artigo muda. O artista, a artista. O estudante, a estudante. Para lembrar: comum de dois, só o artigo troca.' }),
+    mc('<b>o artista / a artista</b> é:', ['comum de dois', 'sobrecomum', 'epiceno'], 'A palavra não muda, só o artigo: comum de dois.'),
+    mc('"O <b>cliente</b> reclamou do atendimento." <b>Cliente</b> é:', ['comum de dois', 'biforme', 'epiceno'], 'O cliente, a cliente: só o artigo muda. Comum de dois.'),
+    mc('Complete: "___ estudante Maria tirou nota 10."', ['A', 'O'], 'Maria é menina. Estudante é comum de dois, então usamos "a".', { two: true }),
+    mc('No <b>comum de dois</b>, o que muda?', ['Só o artigo', 'Só a palavra', 'A palavra e o artigo'], 'A palavra fica igual. Só o artigo muda: o/a dentista.'),
+    mc('Qual destas palavras é <b>comum de dois</b>?', ['dentista', 'criança', 'onça', 'gato'], 'O dentista, a dentista: só o artigo muda.'),
+    ex({ title: 'Sobrecomum: nada muda',
+      body: '<p><b>Nem a palavra, nem o artigo mudam.</b> É o <b>contexto</b> (a história) que mostra se é menino ou menina.</p>',
+      list: [['a criança', '', 'pode ser menino ou menina'], ['o indivíduo', '', 'pode ser homem ou mulher'], ['a pessoa', '', 'pode ser homem ou mulher']],
+      memo: '<b>Sobrecomum</b>: nada muda, <b>nem o artigo</b>! O Pedro é <b>uma</b> criança alegre.',
+      say: 'Sobrecomum: nada muda. Nem a palavra, nem o artigo mudam. É o contexto, a história, que mostra se é menino ou menina. A criança pode ser menino ou menina. O indivíduo pode ser homem ou mulher. A pessoa também. Para lembrar: sobrecomum, nada muda, nem o artigo! O Pedro é uma criança alegre.' }),
+    mc('<b>a criança</b> é:', ['sobrecomum', 'comum de dois', 'biforme'], 'A criança pode ser menino ou menina, e nada muda: sobrecomum.'),
+    mc('Complete: "Pedro é ___ criança muito alegre."', ['uma', 'um'], 'Criança é sobrecomum: é sempre "a criança" ou "uma criança", mesmo sendo menino.', { two: true }),
+    mc('No <b>sobrecomum</b>, o que muda?', ['Nada: o contexto mostra', 'Só o artigo', 'Só a palavra'], 'No sobrecomum nada muda. Só a história mostra se é menino ou menina.'),
+    tf('"A criança" é biforme, porque muda para "o criança" quando é um menino.', false, 'Não existe "o criança". Criança é sobrecomum: nada muda.'),
+    mc('Qual destas palavras é <b>sobrecomum</b>?', ['pessoa', 'estudante', 'leão', 'jacaré'], 'A pessoa: pode ser homem ou mulher, e nada muda.'),
+    mc('<b>O indivíduo</b> pode ser:', ['homem ou mulher', 'só homem', 'só mulher'], 'Indivíduo é sobrecomum: serve para homem ou mulher.'),
+  ]},
+  { id: 'g5', title: 'Epicenos: macho e fêmea', steps: [
+    ex({ title: 'Epicenos: macho e fêmea',
+      body: '<p>Usado para <b>animais e plantas</b>. O artigo <b>não muda</b>. Usamos as palavras <b>MACHO</b> e <b>FÊMEA</b> para mostrar o sexo.</p>',
+      list: [['o jacaré', 'o jacaré <mark>macho</mark> / o jacaré <mark>fêmea</mark>'], ['a onça', 'a onça <mark>macho</mark> / a onça <mark>fêmea</mark>'], ['a mosca', 'a mosca <mark>macho</mark> / a mosca <mark>fêmea</mark>']],
+      memo: '<b>Epiceno</b> = bicho ou planta + <b>macho</b> ou <b>fêmea</b>. Nunca "a jacaroa"!',
+      say: 'Epicenos: macho e fêmea. Usado para animais e plantas. O artigo não muda. Usamos as palavras macho e fêmea para mostrar o sexo. O jacaré macho, o jacaré fêmea. A onça macho, a onça fêmea. A mosca macho, a mosca fêmea. Para lembrar: epiceno é bicho ou planta mais macho ou fêmea.' }),
+    mc('<b>a onça</b> é:', ['epiceno', 'sobrecomum', 'comum de dois'], 'Onça é animal e usamos macho ou fêmea: epiceno.'),
+    mc('Como dizemos que o jacaré é uma <b>menina</b>?', ['o jacaré fêmea', 'a jacaroa', 'a jacaré'], 'O artigo não muda: o jacaré fêmea.'),
+    mc('Como dizemos que a girafa é um <b>menino</b>?', ['a girafa macho', 'o girafo', 'o girafa'], 'O artigo não muda: a girafa macho.'),
+    mc('Os epicenos são usados para:', ['animais e plantas', 'profissões', 'objetos'], 'Epicenos: animais e plantas.'),
+    mc('Qual destas palavras <b>NÃO</b> é epiceno?', ['gato', 'onça', 'jacaré', 'mosca'], 'Gato tem feminino próprio, gata. Então é biforme, não epiceno.'),
+    tf('A cobra é epiceno, porque precisamos usar macho ou fêmea para saber o sexo do animal.', true, 'Isso! A cobra macho, a cobra fêmea.'),
+    mc('Em <b>a mosca macho</b>, o que mostra que é macho?', ['a palavra "macho"', 'o artigo "a"', 'a palavra "mosca"'], 'O artigo continua "a". Quem mostra é a palavra macho.'),
+    mc('<b>o tatu</b> é:', ['epiceno', 'biforme', 'sobrecomum'], 'Tatu é animal: o tatu macho, o tatu fêmea. Epiceno.'),
+  ]},
+  { id: 'g6', title: 'Revisão: classifique o gênero', shuffle: true, steps: [
+    ex({ title: 'Os 4 tipos de gênero',
+      body: '<ul class="ex-list"><li>Biforme <span class="arrow">→</span> duas formas<small>gato/gata, poeta/poetisa, rei/rainha</small></li><li>Comum de dois <span class="arrow">→</span> só o artigo muda<small>o artista / a artista</small></li><li>Sobrecomum <span class="arrow">→</span> nada muda<small>a criança (menino ou menina)</small></li><li>Epiceno <span class="arrow">→</span> macho ou fêmea<small>o jacaré macho / o jacaré fêmea</small></li></ul>',
+      memo: 'Agora eu mostro a palavra e você me diz <b>qual tipo</b> ela é!',
+      say: 'Revisão dos quatro tipos. Biforme: duas formas, como gato e gata, rei e rainha. Comum de dois: só o artigo muda, o artista, a artista. Sobrecomum: nada muda, a criança. Epiceno: macho ou fêmea, o jacaré macho. Agora eu mostro a palavra e você me diz qual tipo ela é.' }),
+    tipo('Classifique: <b>o leão / a leoa</b>', 0, 'Duas formas: leão e leoa. Biforme.'),
+    tipo('Classifique: <b>o estudante / a estudante</b>', 1, 'Só o artigo muda: comum de dois.'),
+    tipo('Classifique: <b>a criança</b> (menino ou menina)', 2, 'Nada muda: sobrecomum.'),
+    tipo('Classifique: <b>a mosca macho / a mosca fêmea</b>', 3, 'Animal com macho e fêmea: epiceno.'),
+    tipo('Classifique: <b>o poeta / a poetisa</b>', 0, 'Duas formas: poeta e poetisa. Biforme.'),
+    tipo('Classifique: <b>o colega / a colega</b>', 1, 'Só o artigo muda: comum de dois.'),
+    tipo('Classifique: <b>a pessoa</b> (homem ou mulher)', 2, 'Nada muda: sobrecomum.'),
+    tipo('Classifique: <b>a baleia macho / a baleia fêmea</b>', 3, 'Animal com macho e fêmea: epiceno.'),
+    tipo('Classifique: <b>o rei / a rainha</b>', 0, 'Duas formas (palavras diferentes): biforme.'),
+    tipo('Classifique: <b>o jornalista / a jornalista</b>', 1, 'Só o artigo muda: comum de dois.'),
+    tipo('Classifique: <b>a vítima</b> (homem ou mulher)', 2, 'Nada muda: sobrecomum.'),
+    tipo('Classifique: <b>o jacaré macho / o jacaré fêmea</b>', 3, 'Animal com macho e fêmea: epiceno.'),
+    mc('Leia: <b>1)</b> A cobra é epiceno porque precisamos usar macho ou fêmea. <b>2)</b> O/A dentista é comum de dois porque a palavra não muda; o que muda é o artigo. <b>3)</b> A criança é biforme porque muda para "o criança" quando é um menino. Estão corretas apenas:', ['1 e 2', '1 e 3', '2 e 3', '1, 2 e 3'], 'A 1 e a 2 estão certas. A 3 está errada: criança é sobrecomum.', { keep: true, a: 0 }),
+  ]},
+  ]
+},
+];
+
+const FINAL = { id: 'final', title: 'Simulado da prova', shuffle: true, steps: [
+  ex({ title: 'Hora do simulado!',
+    body: '<p>Agora é igual à prova: perguntas de <b>tudo</b> misturado. Sem explicação antes, só você e o que aprendeu.</p>',
+    memo: 'Leia com calma, pense na regra e responda. <b>Você consegue!</b>',
+    say: 'Hora do simulado! Agora é igual à prova, perguntas de tudo misturado. Leia com calma, pense na regra e responda. Você consegue!' }),
+  mc('Qual é o plural de <b>beija-flor</b>?', ['beija-flores', 'beijas-flores', 'beijas-flor'], 'Beija é verbo: só o segundo muda.'),
+  mc('Qual é o plural de <b>bem-te-vi</b>?', ['bem-te-vis', 'bens-te-vis', 'bem-tes-vis'], 'Só a última parte muda: bem-te-vis.'),
+  mc('Qual é o plural de <b>cavalo-marinho</b>?', ['cavalos-marinhos', 'cavalo-marinhos', 'cavalos-marinho'], 'Substantivo + adjetivo: os dois mudam.'),
+  regra('Qual regra explica <b>couves-flores</b>?', 1, 'Couve e flor são substantivos: os dois mudam.'),
+  regra('Qual regra explica <b>porquinhos-da-índia</b>?', 2, 'Tem preposição (da) no meio: só o primeiro muda.'),
+  regra('Qual regra explica <b>salários-família</b>?', 2, 'Família diz o tipo de salário: só o primeiro muda.'),
+  mc('Qual das sequências apresenta três substantivos compostos no plural <b>corretamente</b>?', ['vice-campeões, beija-flores, pés de pato', 'vices-campeões, beija-flor, pés de patos', 'vice-campeão, beijas-flores, pé de patos', 'vices-campeões, beijas-flores, pés de patos'], 'Vice nunca muda; beija é verbo; em pés de pato só o primeiro muda.'),
+  tap('O menino comprou uns doces para a irmã.', [0, 3, 6], 'Três artigos: O (menino), uns (doces) e a (irmã).'),
+  mc('Em "O menino comprou <b>uns</b> doces", classifique <b>uns</b>:', ['indefinido, masculino, plural', 'definido, masculino, plural', 'indefinido, feminino, plural'], 'Uns: indefinido, masculino, plural.'),
+  tabela('def', 'fs', ['a', 'o', 'uma', 'as'], 'Definido, feminino, singular: a.'),
+  mc('Feminino de <b>garoto</b> e a regra usada:', ['garota: troca -o por -a', 'garota: radical diferente', 'garotisa: terminação especial'], 'Garoto → garota: troca o -o por -a.'),
+  mc('Qual é o feminino de <b>conde</b>?', ['condessa', 'condesa', 'conda'], 'Terminação especial -essa: condessa.'),
+  mc('Pai → mãe. Qual é a regra?', ['A palavra muda toda (radical diferente)', 'Troca -o por -a', 'Muda -ão para -ã'], 'Biforme com radical diferente: a palavra muda completamente.'),
+  tipo('"O <b>cliente</b> reclamou do atendimento." Cliente é:', 1, 'O cliente, a cliente: comum de dois.'),
+  tipo('"A <b>onça</b> é um animal feroz." Onça é:', 3, 'A onça macho, a onça fêmea: epiceno.'),
+  tipo('"Ninguém viu a <b>criança</b> sair." Criança é:', 2, 'Nada muda, nem o artigo: sobrecomum.'),
+  mc('Leia: <b>1)</b> A cobra é epiceno porque precisamos usar macho ou fêmea. <b>2)</b> O/A dentista é comum de dois porque a palavra não muda; o que muda é o artigo. <b>3)</b> A criança é biforme porque muda para "o criança" quando é um menino. Estão corretas apenas:', ['1 e 2', '1 e 3', '2 e 3', '1, 2 e 3'], 'A 1 e a 2 estão certas. Criança é sobrecomum.', { keep: true, a: 0 }),
+]};
+</script>
+
+<script>
+/* ===================== JOGO ===================== */
+const KEY = 'missao-portugues-y5';
+const $app = document.getElementById('app');
+const def = () => ({ name: '', started: false, xp: 0, done: {}, wrong: {}, bestCombo: 0, voice: true, sound: true });
+let S = load();
+function load() { try { const r = JSON.parse(localStorage.getItem(KEY)); if (r) return Object.assign(def(), r); } catch (e) {} return def(); }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+// ids e índice
+const ALL = [];
+MODULES.forEach(m => m.lessons.forEach(l => { l.mod = m; ALL.push(l); }));
+FINAL.mod = { id: 'final', color: 'var(--gold)', name: 'Simulado' };
+[...ALL, FINAL].forEach(l => l.steps.forEach((s, i) => { s.id = l.id + '-' + i; s.lesson = l; }));
+const QBYID = {}; [...ALL, FINAL].forEach(l => l.steps.forEach(s => { if (s.t !== 'explain') QBYID[s.id] = s; }));
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const strip = h => h.replace(/<br\s*\/?>/g, '. ').replace(/<[^>]+>/g, '').replace(/___/g, ', espaço, ').replace(/→/g, ', vira, ').replace(/\s+/g, ' ').trim();
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+/* ---------- mascote Tico (um tico-tico) ---------- */
+function tico(mood = 'happy', size = 96, cls = '') {
+  const eyes = mood === 'cheer'
+    ? '<path d="M41 57q6-8 12 0M67 57q6-8 12 0" stroke="#1D2340" stroke-width="4" fill="none" stroke-linecap="round"/>'
+    : `<circle cx="47" cy="56" r="7" fill="#fff"/><circle cx="73" cy="56" r="7" fill="#fff"/>
+       <circle cx="${mood === 'think' ? 49 : 48}" cy="${mood === 'think' ? 53 : 57}" r="3.8" fill="#1D2340"/>
+       <circle cx="${mood === 'think' ? 75 : 74}" cy="${mood === 'think' ? 53 : 57}" r="3.8" fill="#1D2340"/>`;
+  const wings = mood === 'cheer'
+    ? '<ellipse cx="22" cy="52" rx="9" ry="20" transform="rotate(-35 22 52)" fill="#7E4B22"/><ellipse cx="98" cy="52" rx="9" ry="20" transform="rotate(35 98 52)" fill="#7E4B22"/>'
+    : '<ellipse cx="25" cy="78" rx="9" ry="19" transform="rotate(15 25 78)" fill="#7E4B22"/><ellipse cx="95" cy="78" rx="9" ry="19" transform="rotate(-15 95 78)" fill="#7E4B22"/>';
+  const drop = mood === 'oops' ? '<path d="M92 30q5 8 0 12q-5-4 0-12z" fill="#7FB6F0"/>' : '';
+  return `<svg class="tico ${cls}" width="${size}" height="${size}" viewBox="0 0 120 120" aria-hidden="true">
+    <path d="M50 36q3-16 12-8q5-12 12 3" fill="#7E4B22"/>
+    ${wings}
+    <ellipse cx="60" cy="72" rx="38" ry="38" fill="#B9773F"/>
+    <path d="M40 36q20-14 40 0" stroke="#5E5E66" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <ellipse cx="60" cy="86" rx="24" ry="20" fill="#F7E8C9"/>
+    <path d="M30 70q30 16 60 0" stroke="#C4572A" stroke-width="6" fill="none" stroke-linecap="round"/>
+    ${eyes}
+    <circle cx="38" cy="66" r="5" fill="#F29B8B" opacity=".55"/><circle cx="82" cy="66" r="5" fill="#F29B8B" opacity=".55"/>
+    <path d="M55 62h10l-5 8z" fill="#F2A93B"/>
+    <path d="M50 108v6M70 108v6" stroke="#E08A2C" stroke-width="4" stroke-linecap="round"/>
+    ${drop}
+  </svg>`;
+}
+const STAR = on => `<svg viewBox="0 0 24 24" class="${on ? 'on' : ''}"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.3l6.6-.8z" fill="${on ? 'var(--gold)' : 'var(--line)'}" stroke="${on ? '#C08F00' : '#C3CBDD'}" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+const ICON = {
+  x: '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>',
+  spk: '<svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
+  bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="var(--gold)" stroke="#C08F00" stroke-width="1.2" stroke-linejoin="round"/></svg>',
+  fire: '<svg viewBox="0 0 24 24"><path d="M12 2c1 4 6 6 6 12a6 6 0 01-12 0c0-3 2-5 3-6 0 2 1 3 2 3 0-3-1-6 1-9z" fill="var(--oops)"/></svg>',
+  trophy: '<svg viewBox="0 0 24 24" width="40" height="40"><path d="M7 3h10v5a5 5 0 01-10 0zM7 5H4a3 3 0 003 4M17 5h3a3 3 0 01-3 4M10 13h4v4h-4zM7 21h10v-2a2 2 0 00-2-2H9a2 2 0 00-2 2z" fill="#fff" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg>',
+};
+
+/* ---------- som (sintetizado, sem arquivos) ---------- */
+let AC = null;
+function audio() { if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } if (AC && AC.state === 'suspended') AC.resume(); return AC; }
+function tone(freq, start, dur, type = 'triangle', vol = 0.18) {
+  const a = audio(); if (!a || !S.sound) return;
+  const o = a.createOscillator(), g = a.createGain(); o.type = type; o.frequency.value = freq;
+  const t = a.currentTime + start; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g).connect(a.destination); o.start(t); o.stop(t + dur + 0.05);
+}
+const SFX = {
+  ok() { tone(784, 0, .16); tone(1175, .1, .28); },
+  combo() { tone(784, 0, .12); tone(988, .08, .12); tone(1319, .16, .3); },
+  oops() { tone(330, 0, .18, 'sine', .14); tone(262, .14, .28, 'sine', .12); },
+  tap() { tone(600, 0, .05, 'sine', .06); },
+  win() { [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .12, .35)); tone(1319, .5, .6); },
+};
+
+/* ---------- voz (do próprio navegador) ---------- */
+let VOICE = null;
+function pickVoice() {
+  if (!('speechSynthesis' in window)) return;
+  const vs = speechSynthesis.getVoices().filter(v => /^pt[-_]BR/i.test(v.lang));
+  const fav = ['Luciana', 'Francisca', 'Google português do Brasil', 'Thalita', 'Maria'];
+  VOICE = vs.find(v => fav.some(f => v.name.includes(f))) || vs[0] || speechSynthesis.getVoices().find(v => /^pt/i.test(v.lang)) || null;
+}
+if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, force) {
+  if (!('speechSynthesis' in window) || (!S.voice && !force)) return;
+  try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'pt-BR'; if (VOICE) u.voice = VOICE; u.rate = 0.97; u.pitch = 1.08; speechSynthesis.speak(u); } catch (e) {}
+}
+function hush() { try { speechSynthesis.cancel(); } catch (e) {} }
+
+/* ---------- confete ---------- */
+const cv = document.getElementById('confetti'), cx = cv.getContext('2d');
+let parts = [], raf = 0;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function confetti(n = 90) {
+  if (reduce) return;
+  cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio;
+  const cols = ['#2D5BD0', '#14755B', '#E7A21B', '#E8723C', '#2FA968', '#F5B800'];
+  for (let i = 0; i < n; i++) parts.push({ x: innerWidth / 2 + (Math.random() - .5) * 120, y: innerHeight * .55, vx: (Math.random() - .5) * 14, vy: -Math.random() * 15 - 6, r: Math.random() * 6 + 4, c: pick(cols), a: Math.random() * 6, va: (Math.random() - .5) * .4, life: 0 });
+  if (!raf) raf = requestAnimationFrame(step);
+}
+function step() {
+  cx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0); cx.clearRect(0, 0, innerWidth, innerHeight);
+  parts.forEach(p => { p.vy += .45; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va; p.life++; cx.save(); cx.translate(p.x, p.y); cx.rotate(p.a); cx.fillStyle = p.c; cx.fillRect(-p.r / 2, -p.r / 3, p.r, p.r * .66); cx.restore(); });
+  parts = parts.filter(p => p.y < innerHeight + 40 && p.life < 200);
+  raf = parts.length ? requestAnimationFrame(step) : (cx.clearRect(0, 0, innerWidth, innerHeight), 0);
+}
+
+/* ---------- frases de incentivo ---------- */
+const N = () => esc(S.name || 'você');
+const PRAISE = [() => `Mandou bem, ${N()}!`, () => 'Isso aí!', () => 'Perfeito!', () => `Você é fera, ${N()}!`, () => 'Acertou em cheio!', () => 'Brilhou!', () => 'Muito bem!', () => `Arrasou, ${N()}!`, () => 'Na mosca!', () => 'Show de bola!'];
+const OOPS = [() => 'Quase!', () => `Tudo bem, ${N()}!`, () => 'Errar faz parte!', () => 'Opa, essa foi por pouco!', () => 'Sem problema!'];
+const OOPS_SUB = ['Essa pergunta volta daqui a pouco para você acertar.', 'Agora você já sabe. Ela vai voltar no fim da lição.', 'Leia a dica com calma. Você vai acertar quando ela voltar.'];
+const COMBO_MSG = { 3: '3 seguidas! Tá pegando fogo!', 5: '5 seguidas! Imparável!', 8: '8 seguidas! Que memória!', 10: '10 seguidas! Nível campeã!', 15: '15 seguidas! Lendária!' };
+
+/* ---------- telas ---------- */
+function totalStars() { return Object.values(S.done).reduce((a, d) => a + (d.stars || 0), 0); }
+function wrongCount() { return Object.keys(S.wrong).filter(id => QBYID[id]).length; }
+
+function renderStart() {
+  hush();
+  $app.innerHTML = `<div class="start">
+    ${tico('happy', 140, 'bounce')}
+    <div class="bubble">Oi! Eu sou o <b>Tico</b>, um tico-tico. Vou te ajudar a estudar para a prova de Português. Qual é o seu nome?</div>
+    <input class="name-in" id="nm" maxlength="20" value="${esc(S.name)}" placeholder="Digite seu nome" aria-label="Seu nome" autocomplete="off">
+    <h1>Missão Português<span>Year 5</span></h1>
+    <div class="chips3"><span class="chip" style="background:var(--blue)">Plurais</span><span class="chip" style="background:var(--green)">Artigos</span><span class="chip" style="background:var(--amber)">Gênero</span></div>
+    <button class="btn" id="go">Começar</button>
+  </div>`;
+  document.getElementById('go').onclick = () => {
+    S.name = (document.getElementById('nm').value || '').trim() || 'você'; S.started = true; save(); audio(); SFX.tap();
+    say(`Oi, ${S.name}! Vamos estudar juntos? Escolha a primeira lição.`); renderMap();
+  };
+}
+
+function renderMap() {
+  hush(); window.scrollTo(0, 0);
+  const firstOpen = ALL.find(l => !S.done[l.id]);
+  let h = `<div class="top"><div class="hello">Oi, ${N()}!</div><div class="pills"><span class="pill" title="Pontos">${ICON.bolt}${S.xp}</span><span class="pill" title="Estrelas">${STAR(true)}${totalStars()}</span></div></div>
+  <div class="cta-row"><button class="btn ghost" id="res">Resumão das regras</button><button class="btn ${wrongCount() ? 'oops' : 'ghost'}" id="rev" ${wrongCount() ? '' : 'disabled'}>Revisar erros${wrongCount() ? ' (' + wrongCount() + ')' : ''}</button></div>`;
+  MODULES.forEach(m => {
+    h += `<section class="mod"><div class="mod-head" style="background:${m.color}"><span class="num">${m.n}</span><div><h2>${m.name}</h2><p>${m.desc}</p></div></div><div class="trail">`;
+    m.lessons.forEach((l, i) => {
+      const d = S.done[l.id];
+      h += `<div class="node"><button class="dot ${d ? 'done' : ''}" style="background:${m.color}" data-l="${l.id}" aria-label="Lição ${l.title}">${d ? '<svg viewBox="0 0 24 24" width="34" height="34"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : i + 1}</button>
+      <div class="node-label"><b>${l.title}</b>${d ? `<div class="stars">${STAR(d.stars >= 1)}${STAR(d.stars >= 2)}${STAR(d.stars >= 3)}</div>` : (l === firstOpen ? '<small style="color:var(--oops-d);font-weight:900">COMECE AQUI</small>' : '')}</div></div>`;
+    });
+    h += `</div></section>`;
+  });
+  const fd = S.done.final;
+  h += `<section class="mod"><div class="mod-head" style="background:var(--ink)"><span class="num">!</span><div><h2>Simulado da prova</h2><p>Tudo misturado, igual à prova</p></div></div>
+  <div class="trail"><div class="node final"><button class="dot" data-l="final" aria-label="Simulado da prova">${ICON.trophy}</button><div class="node-label"><b>Simulado final</b>${fd ? `<div class="stars">${STAR(fd.stars >= 1)}${STAR(fd.stars >= 2)}${STAR(fd.stars >= 3)}</div>` : '<small>Faça depois das lições</small>'}</div></div></div></section>
+  <section class="settings"><h3>Ajustes</h3>
+    <div class="row">Voz do Tico lendo<button class="toggle" id="tv" aria-pressed="${S.voice}" aria-label="Voz"></button></div>
+    <div class="row">Sons de acerto<button class="toggle" id="ts" aria-pressed="${S.sound}" aria-label="Sons"></button></div>
+    <div class="row"><button class="linkbtn" id="nome">Trocar o nome</button><button class="linkbtn danger" id="zera">Zerar progresso</button></div>
+  </section>`;
+  $app.innerHTML = h;
+  $app.querySelectorAll('[data-l]').forEach(b => b.onclick = () => { audio(); SFX.tap(); const id = b.dataset.l; startLesson(id === 'final' ? FINAL : ALL.find(l => l.id === id)); });
+  document.getElementById('res').onclick = () => { SFX.tap(); renderResumo(); };
+  const rv = document.getElementById('rev'); if (wrongCount()) rv.onclick = () => { SFX.tap(); startReview(); };
+  document.getElementById('tv').onclick = e => { S.voice = !S.voice; save(); e.currentTarget.setAttribute('aria-pressed', S.voice); if (S.voice) say('Voz ligada!'); else hush(); };
+  document.getElementById('ts').onclick = e => { S.sound = !S.sound; save(); e.currentTarget.setAttribute('aria-pressed', S.sound); SFX.tap(); };
+  document.getElementById('nome').onclick = () => { S.started = false; save(); renderStart(); };
+  const z = document.getElementById('zera'); let armed = false;
+  z.onclick = () => { if (!armed) { armed = true; z.textContent = 'Tem certeza? Toque de novo'; setTimeout(() => { armed = false; z.textContent = 'Zerar progresso'; }, 3500); return; } const n = S.name; S = def(); S.name = n; S.started = true; save(); renderMap(); };
+}
+
+/* ---------- lição ---------- */
+let R = null;
+function startLesson(lesson) {
+  let steps = lesson.steps.slice();
+  if (lesson.shuffle) { const head = steps.filter(s => s.t === 'explain'); steps = head.concat(shuffle(steps.filter(s => s.t !== 'explain'))); }
+  R = { lesson, queue: steps, pos: 0, firstWrong: new Set(), right: 0, xp: 0, combo: 0, mode: 'lesson' };
+  renderStep();
+}
+function startReview() {
+  const qs = shuffle(Object.keys(S.wrong).map(id => QBYID[id]).filter(Boolean)).slice(0, 15);
+  R = { lesson: { id: 'review', title: 'Revisar erros', mod: { color: 'var(--oops)' } }, queue: [ex({ title: 'Hora de revisar!', body: '<p>Aqui estão as perguntas que você errou antes. Cada uma que você acertar agora sai da lista.</p>', memo: 'Quem revisa os erros <b>memoriza de verdade</b>. Bora!', say: 'Hora de revisar! Aqui estão as perguntas que você errou antes. Cada uma que você acertar agora sai da lista.' })].concat(qs), pos: 0, firstWrong: new Set(), right: 0, xp: 0, combo: 0, mode: 'review' };
+  renderStep();
+}
+function modClass(l) { return 'm-' + ((l.mod && l.mod.id) || 'final'); }
+
+function shell(inner, bottom) {
+  const done = R.pos, total = R.queue.length;
+  $app.innerHTML = `<div class="lesson ${modClass(R.lesson)}">
+    <div class="lbar"><button class="x" id="quit" aria-label="Sair da lição">${ICON.x}</button><div class="prog" role="progressbar" aria-valuenow="${done}" aria-valuemax="${total}"><i style="width:${Math.max(4, done / total * 100)}%"></i></div><div class="combo">${R.combo >= 2 ? '<span style="display:inline-flex;align-items:center;gap:2px">' + ICON.fire.replace('<svg', '<svg width="18" height="18"') + R.combo + '</span>' : ''}</div></div>
+    ${inner}</div>
+    <div class="bottom" id="bottom"><div class="inner">${bottom}</div></div>`;
+  document.getElementById('quit').onclick = () => { hush(); renderMap(); };
+  window.scrollTo(0, 0);
+}
+
+function renderStep() {
+  const s = R.queue[R.pos];
+  if (!s) return renderEnd();
+  if (s.t === 'explain') return renderExplain(s);
+  renderQuestion(s);
+}
+
+function renderExplain(s) {
+  const l = R.lesson, color = (l.mod && l.mod.color) || 'var(--blue)';
+  let body = s.body || '';
+  if (body === '__MATRIZ__') body = `<div class="mtx-wrap">${matrix('def')}${matrix('indef')}</div>`;
+  const list = s.list ? `<ul class="ex-list">${s.list.map(r => r[1] === '' && !r[2] ? `<li style="background:none;padding:6px 0 0;font-size:15px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">${r[0]}</li>` : `<li><span>${r[0]}</span>${r[1] ? `<span class="arrow">→</span><span>${r[1]}</span>` : ''}${r[2] ? `<small>${r[2]}</small>` : ''}</li>`).join('')}</ul>` : '';
+  shell(`<article class="card slide">
+      <span class="kicker" style="background:${color}">${l.mod && l.mod.name ? l.mod.name + ' · ' : ''}Aprenda</span>
+      <h2 class="ex-title">${s.title}</h2>
+      ${s.formula ? `<div class="formula">${s.formula}</div>` : ''}
+      <div class="ex-body">${body}</div>${list}
+      ${s.memo ? `<div class="tip">${tico('happy', 64)}<div class="bubble"><b>Dica do Tico:</b> ${s.memo}</div></div>` : ''}
+    </article>
+    <button class="btn ghost small" id="again" style="max-width:260px;margin:0 auto">Ouvir de novo</button>`,
+    `<button class="btn" id="next">Entendi! Vamos lá</button>`);
+  document.getElementById('again').onclick = () => say(s.say || strip(s.title + '. ' + body), true);
+  document.getElementById('next').onclick = () => { SFX.tap(); R.pos++; renderStep(); };
+  setTimeout(() => say(s.say || strip(s.title + '. ' + body)), 250);
+}
+
+function matrix(kind, hide) {
+  const t = ART[kind];
+  const cell = c => c === hide ? '<td class="q">?</td>' : `<td>${t[c]}</td>`;
+  return `<table class="mtx"><caption>${kind === 'def' ? 'Definidos (específicos)' : 'Indefinidos (qualquer um)'}</caption>
+    <tr><th></th><th>Masc.</th><th>Fem.</th></tr>
+    <tr><th>Sing.</th>${cell('ms')}${cell('fs')}</tr>
+    <tr><th>Plural</th>${cell('mp')}${cell('fp')}</tr></table>`;
+}
+
+function renderQuestion(s) {
+  const l = s.lesson, label = R.mode === 'review' ? 'Revisão' : (l.mod && l.mod.name) || 'Simulado';
+  let area = '', sel = null;
+  if (s.t === 'mc' || s.t === 'table') {
+    const opts = s.o.map((t, i) => ({ t, ok: i === s.a }));
+    R.opts = s.keep ? opts : shuffle(opts);
+    const two = s.two || (R.opts.length === 2 && R.opts.every(o => o.t.length < 22));
+    area = (s.t === 'table' ? `<div class="mtx-wrap" style="margin-bottom:14px">${matrix(s.kind, s.cell)}</div>` : '') +
+      `<div class="opts ${two ? 'two' : ''}">${R.opts.map((o, i) => `<button class="opt" data-i="${i}">${esc(o.t)}</button>`).join('')}</div>`;
+  } else if (s.t === 'tap') {
+    area = `<div class="toks">${s.s.map((w, i) => `<button class="tok" data-i="${i}">${esc(w)}</button>`).join('')}</div>`;
+  } else if (s.t === 'match') {
+    const L = shuffle(s.pairs.map((p, i) => ({ t: p[0], i }))), Rr = shuffle(s.pairs.map((p, i) => ({ t: p[1], i })));
+    area = `<div class="match"><div class="col">${L.map(o => `<button class="mt" data-side="L" data-i="${o.i}">${esc(o.t)}</button>`).join('')}</div><div class="col">${Rr.map(o => `<button class="mt" data-side="R" data-i="${o.i}">${esc(o.t)}</button>`).join('')}</div></div>`;
+  }
+  shell(`<article class="card slide">
+      <div class="qhead"><span class="qlabel">${label}</span><button class="spk" id="spk" aria-label="Ouvir a pergunta">${ICON.spk}</button></div>
+      <h2 class="prompt">${s.q}</h2>${area}</article>`,
+    s.t === 'match' ? `<div style="text-align:center;font-weight:800;color:var(--muted)">Toque em uma palavra de cada lado</div>` : `<button class="btn" id="check" disabled>Verificar</button>`);
+  document.getElementById('spk').onclick = () => say(strip(s.q), true);
+  setTimeout(() => say(strip(s.q)), 200);
+  const check = document.getElementById('check');
+
+  if (s.t === 'mc' || s.t === 'table') {
+    $app.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      SFX.tap(); $app.querySelectorAll('.opt').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); sel = +b.dataset.i; check.disabled = false;
+    });
+    check.onclick = () => {
+      const ok = R.opts[sel].ok;
+      $app.querySelectorAll('.opt').forEach((b, i) => { b.disabled = true; if (R.opts[i].ok) b.classList.add('right'); else if (i === sel) b.classList.add('wrong'); });
+      feedback(s, ok, ok ? '' : R.opts.find(o => o.ok).t);
+    };
+  } else if (s.t === 'tap') {
+    const chosen = new Set();
+    $app.querySelectorAll('.tok').forEach(b => b.onclick = () => {
+      SFX.tap(); const i = +b.dataset.i; chosen.has(i) ? chosen.delete(i) : chosen.add(i); b.classList.toggle('sel'); check.disabled = chosen.size === 0;
+    });
+    check.onclick = () => {
+      const want = new Set(s.a), ok = want.size === chosen.size && [...want].every(i => chosen.has(i));
+      $app.querySelectorAll('.tok').forEach(b => { const i = +b.dataset.i; b.disabled = true; b.classList.remove('sel'); if (want.has(i) && chosen.has(i)) b.classList.add('right'); else if (want.has(i)) b.classList.add('miss'); else if (chosen.has(i)) b.classList.add('wrong'); });
+      feedback(s, ok, ok ? '' : s.a.map(i => s.s[i].replace(/[.,!?]/g, '')).join(', '));
+    };
+  } else if (s.t === 'match') {
+    let pickL = null, pickR = null, matched = 0, misses = 0;
+    const tryPair = () => {
+      if (!pickL || !pickR) return;
+      if (pickL.dataset.i === pickR.dataset.i) {
+        [pickL, pickR].forEach(b => { b.classList.remove('sel'); b.classList.add('done'); b.disabled = true; }); matched++; tone(880, 0, .12); tone(1175, .07, .16);
+        if (matched === s.pairs.length) setTimeout(() => feedback(s, true, '', misses), 250);
+      } else {
+        misses++; SFX.oops(); const a = pickL, b = pickR; [a, b].forEach(x => x.classList.add('shake')); setTimeout(() => [a, b].forEach(x => x.classList.remove('shake', 'sel')), 380);
+      }
+      pickL = pickR = null;
+    };
+    $app.querySelectorAll('.mt').forEach(b => b.onclick = () => {
+      if (b.classList.contains('done')) return; SFX.tap();
+      if (b.dataset.side === 'L') { if (pickL) pickL.classList.remove('sel'); pickL = b; } else { if (pickR) pickR.classList.remove('sel'); pickR = b; }
+      b.classList.add('sel'); tryPair();
+    });
+  }
+}
+
+function feedback(s, ok, answer, misses = 0) {
+  const retry = R.firstWrong.has(s.id);
+  let xp = 0, extra = '';
+  if (ok) {
+    R.right++; R.combo++; S.bestCombo = Math.max(S.bestCombo, R.combo);
+    xp = retry ? 5 : (misses ? 6 : 10);
+    if (R.combo > 0 && R.combo % 5 === 0) { xp += 5; }
+    if (COMBO_MSG[R.combo]) extra = COMBO_MSG[R.combo];
+    if (R.mode === 'review') delete S.wrong[s.id];
+    R.xp += xp; S.xp += xp; save();
+    (COMBO_MSG[R.combo] ? SFX.combo : SFX.ok)(); confetti(COMBO_MSG[R.combo] ? 120 : 45);
+  } else {
+    R.combo = 0; R.firstWrong.add(s.id); S.wrong[s.id] = (S.wrong[s.id] || 0) + 1; save();
+    R.queue.push(s); SFX.oops();
+  }
+  const title = ok ? pick(PRAISE)() : pick(OOPS)();
+  const b = document.getElementById('bottom');
+  b.className = 'bottom slide ' + (ok ? 'good' : 'bad');
+  b.innerHTML = `<div class="inner"><div class="fb">${tico(ok ? 'cheer' : 'oops', 70, ok ? 'pop' : '')}<div style="min-width:0">
+      <h3>${title}</h3>
+      ${ok ? `<p><span class="xpfly">+${xp} pontos</span>${extra ? ` · <b style="color:var(--oops-d)">${extra}</b>` : ''}</p>` : `<p>Resposta certa: <b>${esc(answer)}</b></p>`}
+      <p class="why">${s.why || ''}${ok ? '' : '<br><b>' + pick(OOPS_SUB) + '</b>'}</p></div></div>
+    <button class="btn ${ok ? 'ok' : 'oops'}" id="cont">${ok ? 'Continuar' : 'Entendi'}</button></div>`;
+  const c = document.getElementById('cont'); c.focus({ preventScroll: true });
+  c.onclick = () => { SFX.tap(); R.pos++; renderStep(); };
+  say(ok ? strip(title) + (extra ? '. ' + extra : '') : strip(title) + ' A resposta certa é: ' + answer + '. ' + strip(s.why || ''));
+}
+
+function renderEnd() {
+  hush();
+  const total = new Set(R.queue.filter(s => s.t !== 'explain').map(s => s.id)).size; // perguntas únicas
+  const errs = R.firstWrong.size;
+  const stars = errs === 0 ? 3 : errs <= 2 ? 2 : 1;
+  const acc = total ? Math.round((total - errs) / total * 100) : 100;
+  if (R.mode === 'lesson') { const prev = S.done[R.lesson.id]; S.done[R.lesson.id] = { stars: Math.max(stars, prev ? prev.stars : 0) }; }
+  save();
+  const msg = R.mode === 'review' ? (wrongCount() ? `Ainda faltam ${wrongCount()} para revisar. Você está quase lá!` : 'Lista de erros zerada! Você aprendeu tudo.')
+    : stars === 3 ? `Sem errar nenhuma! ${N()}, você é demais!` : stars === 2 ? 'Muito bom! Quase perfeito. Mais uma rodada e vira 3 estrelas.' : 'Você terminou! Cada erro virou aprendizado. Que tal repetir para ganhar mais estrelas?';
+  const idx = ALL.indexOf(R.lesson), next = R.mode === 'lesson' && idx >= 0 ? (ALL[idx + 1] || FINAL) : null;
+  $app.innerHTML = `<div class="end">
+    ${tico('cheer', 130, 'bounce')}
+    <h1>${R.mode === 'review' ? 'Revisão feita!' : R.lesson === FINAL ? 'Simulado completo!' : 'Lição completa!'}</h1>
+    ${R.mode === 'lesson' ? `<div class="bigstars">${STAR(stars >= 1)}${STAR(stars >= 2)}${STAR(stars >= 3)}</div>` : ''}
+    <div class="bubble" style="max-width:420px">${msg}</div>
+    <div class="stats"><div class="stat"><b>+${R.xp}</b><span>pontos</span></div><div class="stat"><b>${acc}%</b><span>de primeira</span></div><div class="stat"><b>${S.bestCombo}</b><span>recorde seguidas</span></div></div>
+    ${next && R.lesson !== FINAL ? `<button class="btn ok" id="nx">Próxima: ${next.title}</button>` : ''}
+    ${R.mode === 'lesson' && stars < 3 ? `<button class="btn ghost" id="rep">Repetir esta lição</button>` : ''}
+    <button class="btn ghost" id="map">Voltar ao mapa</button>
+  </div>`;
+  SFX.win(); confetti(160); setTimeout(() => confetti(120), 500);
+  say((R.lesson === FINAL ? 'Simulado completo! ' : 'Lição completa! ') + strip(msg));
+  const nx = document.getElementById('nx'); if (nx) nx.onclick = () => startLesson(next);
+  const rp = document.getElementById('rep'); if (rp) rp.onclick = () => startLesson(R.lesson);
+  document.getElementById('map').onclick = renderMap;
+}
+
+/* ---------- resumão ---------- */
+function renderResumo() {
+  window.scrollTo(0, 0);
+  $app.innerHTML = `<div class="lesson res">
+    <div class="lbar"><button class="x" id="back" aria-label="Voltar">${ICON.x}</button><h2 style="font-size:24px">Resumão das regras</h2></div>
+    <div class="card m-plurais"><span class="kicker" style="background:var(--blue)">1 · Plurais</span><h3>Palavras compostas</h3><ul>
+      <li><b>Sem hífen:</b> plural só no fim. girassol → girass<mark>óis</mark></li>
+      <li><b>Com hífen, nome + nome / característica / número:</b> os dois mudam. couve<mark>s</mark>-flor<mark>es</mark>, segunda<mark>s</mark>-feira<mark>s</mark></li>
+      <li><b>Com DE/DO/DA ou função:</b> só o 1º muda. pombo<mark>s</mark>-correio, dragõ<mark>es</mark>-do-mar</li>
+      <li><b>Com verbo ou repetição:</b> só o 2º muda. guarda-chuv<mark>as</mark>, tico-tico<mark>s</mark></li></ul></div>
+    <div class="card m-artigos"><span class="kicker" style="background:var(--green)">2 · Artigos</span><h3>Definidos e indefinidos</h3><ul>
+      <li><b>Definidos (específico):</b> o, a, os, as</li><li><b>Indefinidos (qualquer um):</b> um, uma, uns, umas</li>
+      <li>Classifique com <b>3 perguntas</b>: definido ou indefinido? masculino ou feminino? singular ou plural?</li></ul>
+      <div class="mtx-wrap" style="margin-top:10px">${matrix('def')}${matrix('indef')}</div></div>
+    <div class="card m-genero"><span class="kicker" style="background:var(--amber)">3 · Gênero</span><h3>Biformes e uniformes</h3><ul>
+      <li><b>Biforme (duas formas):</b> -o/-e → -a (gato/gat<mark>a</mark>), -ão → -ã/-oa (irm<mark>ã</mark>, le<mark>oa</mark>), -esa/-essa/-isa (princ<mark>esa</mark>, cond<mark>essa</mark>, poet<mark>isa</mark>)</li>
+      <li><b>Radical diferente:</b> a palavra muda toda. rei/rainha, cavalo/égua, boi/vaca, homem/mulher, pai/mãe</li>
+      <li><b>Comum de dois:</b> só o artigo muda. o/a artista, o/a estudante</li>
+      <li><b>Sobrecomum:</b> nada muda, nem o artigo. a criança, o indivíduo, a pessoa</li>
+      <li><b>Epiceno:</b> animais e plantas + macho/fêmea. o jacaré macho, a onça fêmea</li></ul></div>
+    <button class="btn" id="back2">Voltar ao mapa</button></div>`;
+  document.getElementById('back').onclick = renderMap; document.getElementById('back2').onclick = renderMap;
+  say('Resumão das regras. Plurais, artigos e gênero, tudo numa página só.');
+}
+
+/* ---------- início ---------- */
+const boot = () => (S.started ? renderMap() : renderStart());
+boot();
+</script>
+
+</body></html>
